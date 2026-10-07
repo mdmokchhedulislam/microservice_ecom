@@ -1,107 +1,67 @@
-# {{- if .Values.ingress.enabled }}
+{{- if .Values.ingress.enabled }}
 
-# apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 
-# kind: Ingress
+metadata:
+  name: {{ include "iips.fullname" . }}-ingress
 
-# metadata:
+  annotations:
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 
-#   name: {{ include "iips.fullname" . }}-ingress
+spec:
 
-#   annotations:
-#     {{- with .Values.ingress.annotations }}
-#     {{- toYaml . | nindent 4 }}
-#     {{- end }}
+  ingressClassName: {{ .Values.ingress.className }}
 
-# spec:
+  {{- if and .Values.ingress.tls.enabled .Values.ingress.host }}
 
-#   ingressClassName: {{ .Values.ingress.className }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Values.ingress.tls.secretName }}
 
-#   {{- if .Values.ingress.tls.enabled }}
+  {{- end }}
 
-#   tls:
+  rules:
+    - http:
+        paths:
 
-#     - hosts:
+          # Frontend
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: {{ .Values.service.frontend.port }}
 
-#         - {{ .Values.ingress.host }}
+          # User API
+          - path: /api/users
+            pathType: Prefix
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: {{ .Values.service.user.port }}
 
-#       secretName: {{ .Values.ingress.tls.secretName }}
+          # Product API
+          - path: /api/products
+            pathType: Prefix
+            backend:
+              service:
+                name: product-service
+                port:
+                  number: {{ .Values.service.product.port }}
 
-#   {{- end }}
+          # Order API
+          - path: /api/orders
+            pathType: Prefix
+            backend:
+              service:
+                name: order-service
+                port:
+                  number: {{ .Values.service.order.port }}
 
-#   rules:
-
-#     - host: {{ .Values.ingress.host }}
-
-#       http:
-
-#         paths:
-
-#           # Frontend
-
-#           - path: /
-
-#             pathType: Prefix
-
-#             backend:
-
-#               service:
-
-#                 name: frontend-service
-
-#                 port:
-
-#                   number: {{ .Values.service.frontend.port }}
-
-
-#           # User API
-
-#           - path: /api/users
-
-#             pathType: Prefix
-
-#             backend:
-
-#               service:
-
-#                 name: user-service
-
-#                 port:
-
-#                   number: {{ .Values.service.user.port }}
-
-
-#           # Product API
-
-#           - path: /api/products
-
-#             pathType: Prefix
-
-#             backend:
-
-#               service:
-
-#                 name: product-service
-
-#                 port:
-
-#                   number: {{ .Values.service.product.port }}
-
-
-#           # Order API
-
-#           - path: /api/orders
-
-#             pathType: Prefix
-
-#             backend:
-
-#               service:
-
-#                 name: order-service
-
-#                 port:
-
-#                   number: {{ .Values.service.order.port }}
-
-# {{- end }}
+{{- end }}
