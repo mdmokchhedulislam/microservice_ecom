@@ -96,11 +96,11 @@ app:
 
 database:
 
-  userMongoUri: ""
+  userMongoUri: "mongodb+srv://mokchheduls46_db_user:mokchhedul@mlopscluster.eocbyro.mongodb.net/ecom"
 
-  productMongoUri: ""
+  productMongoUri: "mongodb+srv://mokchheduls46_db_user:mokchhedul@mlopscluster.eocbyro.mongodb.net/product"
 
-  orderMongoUri: ""
+  orderMongoUri: "mongodb+srv://mokchheduls46_db_user:mokchhedul@mlopscluster.eocbyro.mongodb.net/order"
 
 
 # ==========================================
@@ -109,7 +109,7 @@ database:
 
 jwt:
 
-  secret: ""
+  secret: "super_secret_key_is_this"
 
 
 # ==========================================
