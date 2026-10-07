@@ -117,20 +117,19 @@ jwt:
 # ==========================================
 
 ingress:
-
   enabled: true
 
-  className: nginx
+  className: alb
 
-  host: iips.example.com
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
 
-  annotations: {}
+  host: ""
 
   tls:
-
     enabled: false
-
-    secretName: iips-tls
+    secretName: ""
 
 
 # ==========================================
