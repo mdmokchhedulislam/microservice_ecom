@@ -21,17 +21,17 @@ images:
     pullPolicy: IfNotPresent
 
   user:
-    repository: mokchhedul/iips-user-service
+    repository: mokchhedul/iips_user_service
     tag: latest
     pullPolicy: IfNotPresent
 
   product:
-    repository: mokchhedul/iips-product-service
+    repository: mokchhedul/iips_product_service
     tag: latest
     pullPolicy: IfNotPresent
 
   order:
-    repository: mokchhedul/iips-order-service
+    repository: mokchhedul/iips_order_service
     tag: latest
     pullPolicy: IfNotPresent
 
