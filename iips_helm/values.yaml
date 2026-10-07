@@ -84,7 +84,7 @@ service:
 
 app:
 
-  corsUrl: "http://localhost"
+  corsUrl: "http://frontend-service"
 
   jwt:
     expiresIn: "1d"
@@ -178,7 +178,7 @@ resources:
 
 securityContext:
 
-  runAsNonRoot: true
+  runAsNonRoot: false
 
   allowPrivilegeEscalation: false
 
