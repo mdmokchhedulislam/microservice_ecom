@@ -17,7 +17,7 @@ images:
 
   frontend:
     repository: mokchhedul/iips_frontend
-    tag: latest
+    tag: v1
     pullPolicy: IfNotPresent
 
   user:

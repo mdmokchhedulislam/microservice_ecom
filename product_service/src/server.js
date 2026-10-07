@@ -12,11 +12,15 @@ const app = express();
 app.use(express.json());
 
 connectDB();
-app.use(
-  cors({
-    origin: process.env.CORS_URL,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.CORS_URL,
+//   })
+// );
+
+app.use(cors({
+  origin: "*"
+}));
 
 // Health check
 app.get("/health", (req, res) => {

@@ -1,18 +1,17 @@
+
 import axios from "axios";
 
-const PRODUCT_SERVICE_URL = import.meta.env.VITE_PRODUCT_SERVICE_URL;
+const PRODUCT_SERVICE_URL = "/api/products";
 
 export const getProducts = async () => {
-  const response = await axios.get(
-    `${PRODUCT_SERVICE_URL}/api/products`
-  );
+  const response = await axios.get(PRODUCT_SERVICE_URL);
 
   return response.data.products;
 };
 
 export const getProductById = async (id) => {
   const response = await axios.get(
-    `${PRODUCT_SERVICE_URL}/api/products/${id}`
+    `${PRODUCT_SERVICE_URL}/${id}`
   );
 
   return response.data.product;

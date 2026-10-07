@@ -1,10 +1,11 @@
+
 import axios from "axios";
 
-const USER_SERVICE_URL = import.meta.env.VITE_USER_SERVICE_URL;
+const USER_SERVICE_URL = "/api/users";
 
 export const registerUser = async (userData) => {
   const response = await axios.post(
-    `${USER_SERVICE_URL}/api/users/register`,
+    `${USER_SERVICE_URL}/register`,
     userData
   );
 
@@ -13,7 +14,7 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (userData) => {
   const response = await axios.post(
-    `${USER_SERVICE_URL}/api/users/login`,
+    `${USER_SERVICE_URL}/login`,
     userData
   );
 
@@ -24,7 +25,7 @@ export const getProfile = async () => {
   const token = localStorage.getItem("token");
 
   const response = await axios.get(
-    `${USER_SERVICE_URL}/api/users/profile`,
+    `${USER_SERVICE_URL}/profile`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -1,10 +1,11 @@
+
 import axios from "axios";
 
-const ORDER_SERVICE_URL = import.meta.env.VITE_ORDER_SERVICE_URL;
+const ORDER_SERVICE_URL = "/api/orders";
 
 export const createOrder = async (orderData) => {
   const response = await axios.post(
-    `${ORDER_SERVICE_URL}/api/orders`,
+    ORDER_SERVICE_URL,
     orderData
   );
 
@@ -13,7 +14,7 @@ export const createOrder = async (orderData) => {
 
 export const getOrdersByUser = async (userId) => {
   const response = await axios.get(
-    `${ORDER_SERVICE_URL}/api/orders/user/${userId}`
+    `${ORDER_SERVICE_URL}/user/${userId}`
   );
 
   return response.data;

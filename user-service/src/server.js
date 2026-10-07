@@ -13,11 +13,15 @@ app.use(express.json());
 
 // Database
 connectDB();
-app.use(
-  cors({
-    origin: process.env.CORS_URL,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.CORS_URL,
+//   })
+// );
+
+app.use(cors({
+  origin: "*"
+}));
 
 // Health check
 app.get("/health", (req, res) => {
