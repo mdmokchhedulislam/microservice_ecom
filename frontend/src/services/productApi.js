@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const PRODUCT_SERVICE_URL = "http://localhost:5002";
+const PRODUCT_SERVICE_URL = import.meta.env.VITE_PRODUCT_SERVICE_URL;
 
 export const getProducts = async () => {
   const response = await axios.get(

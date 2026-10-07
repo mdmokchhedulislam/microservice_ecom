@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: {{ include "iips.fullname" . }}-config
+
+data:
+
+  JWT_EXPIRES_IN: {{ .Values.app.jwt.expiresIn | quote }}
+
+  CORS_URL: {{ .Values.app.corsUrl | quote }}
+
+  USER_SERVICE_URL: "http://user-service:{{ .Values.service.user.port }}"
+
+  PRODUCT_SERVICE_URL: "http://product-service:{{ .Values.service.product.port }}"

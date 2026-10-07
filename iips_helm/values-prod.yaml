@@ -1,0 +1,55 @@
+replicaCount:
+
+  frontend: 3
+
+  user: 3
+
+  product: 3
+
+  order: 3
+
+
+images:
+
+  frontend:
+    tag: "1.0.0"
+
+  user:
+    tag: "1.0.0"
+
+  product:
+    tag: "1.0.0"
+
+  order:
+    tag: "1.0.0"
+
+
+app:
+
+  corsUrl: "https://iips.example.com"
+
+
+ingress:
+
+  enabled: true
+
+  className: nginx
+
+  host: iips.example.com
+
+  tls:
+
+    enabled: true
+
+    secretName: iips-tls
+
+
+autoscaling:
+
+  enabled: true
+
+  minReplicas: 3
+
+  maxReplicas: 10
+
+  targetCPUUtilizationPercentage: 70

@@ -1,0 +1,134 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: {{ include "iips.fullname" . }}-order
+
+  labels:
+    app: order-service
+
+spec:
+
+  replicas: {{ .Values.replicaCount.order }}
+
+  selector:
+
+    matchLabels:
+      app: order-service
+
+  template:
+
+    metadata:
+
+      labels:
+        app: order-service
+
+    spec:
+
+      containers:
+
+        - name: order-service
+
+          image: "{{ .Values.images.order.repository }}:{{ .Values.images.order.tag }}"
+
+          imagePullPolicy: {{ .Values.images.order.pullPolicy }}
+
+          ports:
+
+            - name: http
+
+              containerPort: {{ .Values.ports.order }}
+
+          env:
+
+            - name: PORT
+
+              value: "{{ .Values.ports.order }}"
+
+            - name: MONGO_URI
+
+              valueFrom:
+
+                secretKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-secret
+
+                  key: ORDER_MONGO_URI
+
+            - name: JWT_SECRET
+
+              valueFrom:
+
+                secretKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-secret
+
+                  key: JWT_SECRET
+
+            - name: JWT_EXPIRES_IN
+
+              valueFrom:
+
+                configMapKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-config
+
+                  key: JWT_EXPIRES_IN
+
+            - name: USER_SERVICE_URL
+
+              valueFrom:
+
+                configMapKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-config
+
+                  key: USER_SERVICE_URL
+
+            - name: PRODUCT_SERVICE_URL
+
+              valueFrom:
+
+                configMapKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-config
+
+                  key: PRODUCT_SERVICE_URL
+
+            - name: CORS_URL
+
+              valueFrom:
+
+                configMapKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-config
+
+                  key: CORS_URL
+
+          resources:
+            {{ toYaml .Values.resources.order | nindent 12 }}
+
+          readinessProbe:
+
+            httpGet:
+
+              path: /health
+
+              port: {{ .Values.ports.order }}
+
+            initialDelaySeconds: 10
+
+            periodSeconds: 10
+
+          livenessProbe:
+
+            httpGet:
+
+              path: /health
+
+              port: {{ .Values.ports.order }}
+
+            initialDelaySeconds: 20
+
+            periodSeconds: 20

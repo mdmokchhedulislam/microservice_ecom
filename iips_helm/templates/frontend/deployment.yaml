@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: {{ include "iips.fullname" . }}-frontend
+
+  labels:
+    {{ include "iips.labels" . | nindent 4 }}
+
+spec:
+
+  replicas: {{ .Values.replicaCount.frontend }}
+
+  selector:
+
+    matchLabels:
+      app: frontend
+        {{- include "iips.selectorLabels" . | nindent 6 }}
+
+  template:
+
+    metadata:
+
+      labels:
+        app: frontend
+          {{- include "iips.selectorLabels" . | nindent 8 }}
+
+    spec:
+
+      containers:
+
+        - name: frontend
+
+          image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
+
+          imagePullPolicy: {{ .Values.images.frontend.pullPolicy }}
+
+          ports:
+
+            - name: http
+
+              containerPort: {{ .Values.ports.frontend }}
+
+              protocol: TCP
+
+          resources:
+            {{ toYaml .Values.resources.frontend | nindent 12 }}

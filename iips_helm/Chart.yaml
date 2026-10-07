@@ -1,0 +1,11 @@
+apiVersion: v2
+
+name: iips
+
+description: Helm chart for IIPS microservices application
+
+type: application
+
+version: 0.1.0
+
+appVersion: "1.0.0"

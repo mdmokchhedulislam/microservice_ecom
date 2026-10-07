@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: {{ include "iips.fullname" . }}-user
+
+  labels:
+    app: user-service
+
+spec:
+
+  replicas: {{ .Values.replicaCount.user }}
+
+  selector:
+
+    matchLabels:
+      app: user-service
+
+  template:
+
+    metadata:
+
+      labels:
+        app: user-service
+
+    spec:
+
+      containers:
+
+        - name: user-service
+
+          image: "{{ .Values.images.user.repository }}:{{ .Values.images.user.tag }}"
+
+          imagePullPolicy: {{ .Values.images.user.pullPolicy }}
+
+          ports:
+
+            - name: http
+
+              containerPort: {{ .Values.ports.user }}
+
+              protocol: TCP
+
+          env:
+
+            - name: PORT
+
+              value: "{{ .Values.ports.user }}"
+
+            - name: MONGO_URI
+
+              valueFrom:
+
+                secretKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-secret
+
+                  key: USER_MONGO_URI
+
+            - name: JWT_SECRET
+
+              valueFrom:
+
+                secretKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-secret
+
+                  key: JWT_SECRET
+
+            - name: JWT_EXPIRES_IN
+
+              valueFrom:
+
+                configMapKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-config
+
+                  key: JWT_EXPIRES_IN
+
+            - name: CORS_URL
+
+              valueFrom:
+
+                configMapKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-config
+
+                  key: CORS_URL
+
+          resources:
+            {{ toYaml .Values.resources.user | nindent 12 }}
+
+          securityContext:
+
+            runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
+
+            allowPrivilegeEscalation: {{ .Values.securityContext.allowPrivilegeEscalation }}
+
+          readinessProbe:
+
+            httpGet:
+
+              path: /health
+
+              port: {{ .Values.ports.user }}
+
+            initialDelaySeconds: 10
+
+            periodSeconds: 10
+
+          livenessProbe:
+
+            httpGet:
+
+              path: /health
+
+              port: {{ .Values.ports.user }}
+
+            initialDelaySeconds: 20
+
+            periodSeconds: 20

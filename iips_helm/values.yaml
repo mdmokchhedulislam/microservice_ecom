@@ -1,0 +1,198 @@
+# ==========================================
+# Replica Count
+# ==========================================
+
+replicaCount:
+  frontend: 2
+  user: 2
+  product: 2
+  order: 2
+
+
+# ==========================================
+# Docker Images
+# ==========================================
+
+images:
+
+  frontend:
+    repository: mokchhedul/iips_frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  user:
+    repository: mokchhedul/iips-user-service
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  product:
+    repository: mokchhedul/iips-product-service
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  order:
+    repository: mokchhedul/iips-order-service
+    tag: latest
+    pullPolicy: IfNotPresent
+
+
+# ==========================================
+# Container Ports
+# ==========================================
+
+ports:
+
+  frontend: 3000
+
+  user: 5001
+
+  product: 5002
+
+  order: 5003
+
+
+# ==========================================
+# Kubernetes Services
+# ==========================================
+
+service:
+
+  frontend:
+    type: ClusterIP
+    port: 80
+    targetPort: 3000
+
+  user:
+    type: ClusterIP
+    port: 5001
+    targetPort: 5001
+
+  product:
+    type: ClusterIP
+    port: 5002
+    targetPort: 5002
+
+  order:
+    type: ClusterIP
+    port: 5003
+    targetPort: 5003
+
+
+# ==========================================
+# Application Configuration
+# ==========================================
+
+app:
+
+  corsUrl: "http://localhost"
+
+  jwt:
+    expiresIn: "1d"
+
+
+# ==========================================
+# Database Configuration
+# ==========================================
+
+database:
+
+  userMongoUri: ""
+
+  productMongoUri: ""
+
+  orderMongoUri: ""
+
+
+# ==========================================
+# JWT
+# ==========================================
+
+jwt:
+
+  secret: ""
+
+
+# ==========================================
+# Ingress
+# ==========================================
+
+ingress:
+
+  enabled: true
+
+  className: nginx
+
+  host: iips.example.com
+
+  annotations: {}
+
+  tls:
+
+    enabled: false
+
+    secretName: iips-tls
+
+
+# ==========================================
+# Resources
+# ==========================================
+
+resources:
+
+  frontend:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  user:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  product:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  order:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+
+# ==========================================
+# Security
+# ==========================================
+
+securityContext:
+
+  runAsNonRoot: true
+
+  allowPrivilegeEscalation: false
+
+
+# ==========================================
+# HPA
+# ==========================================
+
+autoscaling:
+
+  enabled: false
+
+  minReplicas: 2
+
+  maxReplicas: 5
+
+  targetCPUUtilizationPercentage: 70

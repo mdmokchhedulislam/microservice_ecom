@@ -1,0 +1,47 @@
+replicaCount:
+
+  frontend: 1
+
+  user: 1
+
+  product: 1
+
+  order: 1
+
+
+images:
+
+  frontend:
+    tag: latest
+
+  user:
+    tag: latest
+
+  product:
+    tag: latest
+
+  order:
+    tag: latest
+
+
+app:
+
+  corsUrl: "http://iips-dev.example.com"
+
+
+ingress:
+
+  enabled: true
+
+  className: nginx
+
+  host: iips-dev.example.com
+
+  tls:
+
+    enabled: false
+
+
+autoscaling:
+
+  enabled: false

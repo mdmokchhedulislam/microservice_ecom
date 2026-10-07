@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ORDER_SERVICE_URL = "http://localhost:5003";
+const ORDER_SERVICE_URL = import.meta.env.VITE_ORDER_SERVICE_URL;
 
 export const createOrder = async (orderData) => {
   const response = await axios.post(

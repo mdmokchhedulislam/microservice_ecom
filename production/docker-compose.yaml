@@ -1,0 +1,80 @@
+services:
+
+  # =========================
+  # Frontend
+  # =========================
+  frontend:
+    image: mokchhedul/iips_frontend:latest
+    container_name: iips-frontend
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      VITE_USER_SERVICE_URL: "http://localhost:5001"
+      VITE_PRODUCT_SERVICE_URL: "http://localhost:5002"
+      VITE_ORDER_SERVICE_URL: "http://localhost:5003"
+
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+
+    restart: unless-stopped
+
+
+  # =========================
+  # User Service
+  # =========================
+  user-service:
+    image: mokchhedul/iips_user_service:latest
+    container_name: iips-user-service
+
+    ports:
+      - "5001:5001"
+
+    environment:
+      PORT: 5001
+      MONGO_URI: "mongodb+srv://mokchheduls46_db_user:mokchhedul@mlopscluster.eocbyro.mongodb.net/user"
+      JWT_SECRET: "your_super_secret_key_change_this"
+      JWT_EXPIRES_IN: "1d"
+
+    restart: unless-stopped
+
+
+  # =========================
+  # Product Service
+  # =========================
+  product-service:
+    image: mokchhedul/iips_product_service:latest
+    container_name: iips-product-service
+
+    ports:
+      - "5002:5002"
+
+    environment:
+      PORT: 5002
+      MONGO_URI: "mongodb+srv://mokchheduls46_db_user:mokchhedul@mlopscluster.eocbyro.mongodb.net/product"
+      JWT_SECRET: "your_super_secret_key_change_this"
+      JWT_EXPIRES_IN: "1d"
+   
+    restart: unless-stopped
+
+
+  # =========================
+  # Order Service
+  # =========================
+  order-service:
+    image: mokchhedul/iips_order_service:latest
+    container_name: iips-order-service
+
+    ports:
+      - "5003:5003"
+
+    environment:
+      PORT: 5003
+      MONGO_URI: "mongodb+srv://mokchheduls46_db_user:mokchhedul@mlopscluster.eocbyro.mongodb.net/order"
+      JWT_SECRET: "your_super_secret_key_change_this"
+      JWT_EXPIRES_IN: "1d"
+
+    restart: unless-stopped

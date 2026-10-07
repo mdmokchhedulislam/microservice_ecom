@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: {{ include "iips.fullname" . }}-product
+
+  labels:
+    app: product-service
+
+spec:
+
+  replicas: {{ .Values.replicaCount.product }}
+
+  selector:
+
+    matchLabels:
+      app: product-service
+
+  template:
+
+    metadata:
+
+      labels:
+        app: product-service
+
+    spec:
+
+      containers:
+
+        - name: product-service
+
+          image: "{{ .Values.images.product.repository }}:{{ .Values.images.product.tag }}"
+
+          imagePullPolicy: {{ .Values.images.product.pullPolicy }}
+
+          ports:
+
+            - name: http
+
+              containerPort: {{ .Values.ports.product }}
+
+          env:
+
+            - name: PORT
+
+              value: "{{ .Values.ports.product }}"
+
+            - name: MONGO_URI
+
+              valueFrom:
+
+                secretKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-secret
+
+                  key: PRODUCT_MONGO_URI
+
+            - name: JWT_SECRET
+
+              valueFrom:
+
+                secretKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-secret
+
+                  key: JWT_SECRET
+
+            - name: JWT_EXPIRES_IN
+
+              valueFrom:
+
+                configMapKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-config
+
+                  key: JWT_EXPIRES_IN
+
+            - name: CORS_URL
+
+              valueFrom:
+
+                configMapKeyRef:
+
+                  name: {{ include "iips.fullname" . }}-config
+
+                  key: CORS_URL
+
+          resources:
+            {{ toYaml .Values.resources.product | nindent 12 }}
+
+          readinessProbe:
+
+            httpGet:
+
+              path: /health
+
+              port: {{ .Values.ports.product }}
+
+            initialDelaySeconds: 10
+
+            periodSeconds: 10
+
+          livenessProbe:
+
+            httpGet:
+
+              path: /health
+
+              port: {{ .Values.ports.product }}
+
+            initialDelaySeconds: 20
+
+            periodSeconds: 20

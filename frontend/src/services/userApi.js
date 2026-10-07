@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const USER_SERVICE_URL = "http://localhost:5001";
+const USER_SERVICE_URL = import.meta.env.VITE_USER_SERVICE_URL;
 
 export const registerUser = async (userData) => {
   const response = await axios.post(
